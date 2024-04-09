@@ -92,6 +92,7 @@ while True:
         verdict = fingerprint.search_finger()
         time.sleep(0.5)
         if verdict == False:
+            buzzer.incorrect_beep()
             LCD.lcd.clear()
             LCD.lcd.cursor_pos = (0, 0)
             LCD.lcd.write_string("Not Found")
@@ -99,12 +100,13 @@ while True:
             LCD.lcd.write_string("Try again!")
             time.sleep(3)
         else:
+            buzzer.correct_beep()
             name, surname, sec_level = verdict
             LCD.lcd.clear()
             LCD.lcd.cursor_pos = (0,0)
             LCD.lcd.write_string(f"Welcome, {name} {surname}")
             time.sleep(3)
-            print(f"Welcome, {name} {surname}")
+            #print(f"Welcome, {name} {surname}")
         state = "mode_choosing"
         LCD.hello_screen()
             
