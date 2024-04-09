@@ -75,11 +75,11 @@ while True:
 
         if action == '2':
             LCD.lcd.clear()
+            # LCD.lcd.cursor_pos = (0,0)
+            # LCD.lcd.write_string("Delete mode")
             LCD.lcd.cursor_pos = (0,0)
-            LCD.lcd.write_string("Searching mode")
-            LCD.lcd.cursor_pos = (1,0)
-            LCD.lcd.write_string("Place finger")
-            #
+            LCD.lcd.write_string("Enter emp to delete")
+            fingerprint.delete_employer(CONFIRM_BUTTON)
         
     if state == "user_mode":
         verdict = fingerprint.search_finger()

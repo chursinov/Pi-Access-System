@@ -31,7 +31,6 @@ def fetchFingersEmployersSecLevels():
 
 def addFingerPrint(specs,emp_id,sec_level):
     conn = psycopg2.connect(f"dbname={db_name} user={db_user} host={db_address} password=127238349Tel")
-    print(len(specs))
     str_specs = str(specs)
     cur = conn.cursor()
     cur.execute(f"SELECT count(*) FROM fingerprint \
@@ -48,5 +47,14 @@ def addFingerPrint(specs,emp_id,sec_level):
     cur.close()
     conn.close()
     return True
-    
-    
+
+def delete_employer(id):
+    conn = psycopg2.connect(f"dbname={db_name} user={db_user} host={db_address} password=127238349Tel")
+    cur = conn.cursor()
+    cur.execute(f"DELETE FROM employer \
+                WHERE employer_id={id}")
+    conn.commit()
+    LCD.lcd.cursor_pos = (2,0)
+    LCD.lcd.write_string("Commited to DB!")
+    cur.close()
+    conn.close()

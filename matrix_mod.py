@@ -80,6 +80,11 @@ def read_input(enroll_input_state):
                 LCD.lcd.cursor_pos = (0, 0)
                 LCD.lcd.write_string("Enter security level")
                 LCD.write_id(input_code, 1)
+            if enroll_input_state == "delete_state":
+                LCD.lcd.clear()
+                LCD.lcd.cursor_pos = (0,0)
+                LCD.lcd.write_string("Enter id to delete")
+                LCD.write_id(input_code, 1)
     if '#' in code:
         try:
             raise ValueError

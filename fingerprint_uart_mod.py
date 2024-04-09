@@ -111,6 +111,20 @@ def search_finger():
                 continue
         return False
 
+def delete_employer(CONFIRM_BUTTON):
+    matrix.input_code = ""
+    delete_state = "delete_state"
+    while True:
+        if GPIO.input(CONFIRM_BUTTON) == False:
+            break
+        employer_id_to_delete = matrix.read_input(delete_state)
+        LCD.write_id(matrix.input_code,1)
+    LCD.enter_emp_id_msg(employer_id_to_delete)
+    DB.delete_employer(employer_id_to_delete)
+    global state
+    state = "choose_admin_action"
+    LCD.hello_admin()
+
 try:
     f = PyFingerprint('/dev/ttyS0', 57600, 0xFFFFFFFF, 0x00000000)
     #print('Fingerprint sensor initiated')
