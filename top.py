@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 import time
 from pad4pi import rpi_gpio
 import fingerprint_uart_mod as fingerprint
+import buzzer as buzzer
 
 # Buttons
 ADMIN_BUTTON = 4
@@ -31,26 +32,32 @@ LCD.hello_screen()
 access_levels = ['1', '2', '3', '4']
 
 state = "choose_user_mode"
+#Buzzer off
+buzzer.off()
 while True:
     # Main menu
     if GPIO.input(ADMIN_BUTTON) == False:
         # Go to to admin mode
+        buzzer.beep()
         time.sleep(0.5)
         state = "admin_mode"
         LCD.mode_choosing(state)
     if GPIO.input(USER_BUTTON) == False:
         # Go to user mode
+        buzzer.beep()
         state = "user_mode"
         time.sleep(0.5)
         LCD.mode_choosing(state)
     if GPIO.input(HOME_BUTTON) == False:
         # Go back to main menu
+        buzzer.beep()
         state = "mode_choosing"
         time.sleep(0.5)
         LCD.lcd.clear()
         LCD.hello_screen()
     if GPIO.input(CONFIRM_BUTTON) == False:
         # Go back to main menu
+        buzzer.beep()
         time.sleep(0.5)
     
     

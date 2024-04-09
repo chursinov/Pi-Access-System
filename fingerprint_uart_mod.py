@@ -4,6 +4,7 @@ import time
 import DB_mod as DB
 import matrix_mod as matrix
 import LCD_mod as LCD
+import buzzer as buzzer
 
 
 def enrollFinger(CONFIRM_BUTTON):
@@ -14,7 +15,7 @@ def enrollFinger(CONFIRM_BUTTON):
     LCD.lcd.cursor_pos = (2, 0)
     LCD.lcd.write_string("Remove Finger")
     time.sleep(1)
-    LCD.lcd.cursor_pos(3, 0)
+    LCD.lcd.cursor_pos = (3, 0)
     LCD.lcd.write_string("Place same finger")
     while f.readImage() == False:
         pass
@@ -119,6 +120,7 @@ def delete_employer(CONFIRM_BUTTON):
             break
         employer_id_to_delete = matrix.read_input(delete_state)
         LCD.write_id(matrix.input_code,1)
+
     LCD.enter_emp_id_msg(employer_id_to_delete)
     DB.delete_employer(employer_id_to_delete)
     global state

@@ -1,6 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 import LCD_mod as LCD
+import buzzer as buzzer
 
 # Matrix_keyboard
 R1 = 10
@@ -50,12 +51,15 @@ def readline(line, chars):
     global input_code
     GPIO.output(line, GPIO.HIGH)
     if GPIO.input(C1) == 1:
+        buzzer.beep()
         input_code += chars[0]
         time.sleep(0.3)
     if GPIO.input(C2) == 1:
+        buzzer.beep()
         input_code += chars[1]
         time.sleep(0.5)
     if GPIO.input(C3) == 1:
+        buzzer.beep()
         input_code += chars[2]
         time.sleep(0.5)
     GPIO.output(line, GPIO.LOW)
