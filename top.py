@@ -6,6 +6,7 @@ from pad4pi import rpi_gpio
 import fingerprint_uart_mod as fingerprint
 import buzzer as buzzer
 import LED as LED
+import servo as servo
 
 # Buttons
 ADMIN_BUTTON = 4
@@ -101,17 +102,33 @@ while True:
             LCD.lcd.cursor_pos = (1, 0)
             LCD.lcd.write_string("Try again!")
             time.sleep(3)
-        else:
-            buzzer.correct_beep()
-            LED.blink_green()
+            state = "mode_choosing"
+            LCD.hello_screen()
+        elif verdict != False:
             name, surname, sec_level = verdict
-            LCD.lcd.clear()
-            LCD.lcd.cursor_pos = (0,0)
-            LCD.lcd.write_string(f"Welcome, {name} {surname}")
-            time.sleep(3)
-            #print(f"Welcome, {name} {surname}")
-        state = "mode_choosing"
-        LCD.hello_screen()
+            if int(sec_level) < fingerprint.room_sec_level:
+                buzzer.incorrect_beep()
+                LED.blink_red()
+                LCD.lcd.clear()
+                LCD.lcd.cursor_pos = (0,0)
+                LCD.lcd.write_string("Access denied")
+                time.sleep(3)
+                state = "mode_choosing"
+                LCD.hello_screen()
+            else:
+                
+                
+                buzzer.correct_beep()
+                LED.blink_green()
+                
+                LCD.lcd.clear()
+                LCD.lcd.cursor_pos = (0,0)
+                servo.open_lock()
+                LCD.lcd.write_string(f"Welcome, {name} {surname}")
+                time.sleep(3)
+                #print(f"Welcome, {name} {surname}")
+            state = "mode_choosing"
+            LCD.hello_screen()
             
         
         

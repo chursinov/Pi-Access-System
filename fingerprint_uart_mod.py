@@ -6,6 +6,7 @@ import matrix_mod as matrix
 import LCD_mod as LCD
 import buzzer as buzzer
 
+room_sec_level = 2
 
 def enrollFinger(CONFIRM_BUTTON):
     global state
