@@ -1,0 +1,11 @@
+--2024-03-26 20:01:03--  http://apt.pm-codeworks.de/pm-codeworks.de.gpg
+Resolving apt.pm-codeworks.de (apt.pm-codeworks.de)... 94.16.108.54, 2a03:4000:51:e1b:44c2:deff:feb0:4317
+Connecting to apt.pm-codeworks.de (apt.pm-codeworks.de)|94.16.108.54|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3211 (3.1K) [application/octet-stream]
+Saving to: ‘STDOUT’
+
+-                                                0%[                                                                                                    ]       0  --.-KB/s               -                                                0%[                                                                                                    ]       0  --.-KB/s    in 0s      
+
+
+Cannot write to ‘-’ (Broken pipe).

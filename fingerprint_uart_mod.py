@@ -124,6 +124,7 @@ def delete_employer(CONFIRM_BUTTON):
     global state
     state = "choose_admin_action"
     LCD.hello_admin()
+    time.sleep(3)
 
 try:
     f = PyFingerprint('/dev/ttyS0', 57600, 0xFFFFFFFF, 0x00000000)
