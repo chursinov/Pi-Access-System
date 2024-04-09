@@ -5,6 +5,7 @@ import time
 from pad4pi import rpi_gpio
 import fingerprint_uart_mod as fingerprint
 import buzzer as buzzer
+import LED as LED
 
 # Buttons
 ADMIN_BUTTON = 4
@@ -93,6 +94,7 @@ while True:
         time.sleep(0.5)
         if verdict == False:
             buzzer.incorrect_beep()
+            LED.blink_red()
             LCD.lcd.clear()
             LCD.lcd.cursor_pos = (0, 0)
             LCD.lcd.write_string("Not Found")
@@ -101,6 +103,7 @@ while True:
             time.sleep(3)
         else:
             buzzer.correct_beep()
+            LED.blink_green()
             name, surname, sec_level = verdict
             LCD.lcd.clear()
             LCD.lcd.cursor_pos = (0,0)
