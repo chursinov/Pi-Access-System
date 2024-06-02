@@ -7,6 +7,9 @@ import fingerprint_uart_mod as fingerprint
 import buzzer as buzzer
 import LED as LED
 import servo as servo
+import DB_mod as DB
+import socket
+import logging_mod as Log
 
 # Buttons
 ADMIN_BUTTON = 4
@@ -58,7 +61,7 @@ while True:
         LCD.lcd.clear()
         LCD.hello_screen()
     if GPIO.input(CONFIRM_BUTTON) == False:
-        # Go back to main menu
+        # Confirm action
         buzzer.beep()
         time.sleep(0.5)
     
@@ -106,25 +109,29 @@ while True:
             LCD.hello_screen()
         elif verdict != False:
             name, surname, sec_level = verdict
-            if int(sec_level) < fingerprint.room_sec_level:
+            local_ip = socket.gethostbyname(socket.gethostname()) ##ip
+            zone = DB.fetch_zone_by_ip(local_ip)
+            #[time] Zone: [Zone] Employer: [name surname] Access: [Granted | Not Granted]
+            if DB.fetch_sec_level(local_ip) > int(sec_level): ## Comparison room security level and employee security level
                 buzzer.incorrect_beep()
                 LED.blink_red()
                 LCD.lcd.clear()
                 LCD.lcd.cursor_pos = (0,0)
                 LCD.lcd.write_string("Access denied")
+                DB.insert_event(name, surname, zone, access='Denied')
+                Log.print_last_event()
                 time.sleep(3)
                 state = "mode_choosing"
                 LCD.hello_screen()
             else:
-                
-                
                 buzzer.correct_beep()
                 LED.blink_green()
-                
                 LCD.lcd.clear()
                 LCD.lcd.cursor_pos = (0,0)
                 servo.open_lock()
                 LCD.lcd.write_string(f"Welcome, {name} {surname}")
+                DB.insert_event(name, surname, zone, access='Granted')
+                Log.print_last_event()
                 time.sleep(3)
                 #print(f"Welcome, {name} {surname}")
             state = "mode_choosing"

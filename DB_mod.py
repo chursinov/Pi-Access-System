@@ -2,7 +2,7 @@ import psycopg2
 import LCD_mod as LCD
 db_name = "skud"
 db_user = "fingerprint"
-db_address = "192.168.0.28"
+db_address = "localhost"
 
 def fetchFingers():
     conn = psycopg2.connect(f"dbname={db_name} user={db_user} host={db_address} password=127238349Tel")
@@ -25,7 +25,7 @@ def fetchFingersEmployersSecLevels():
                 FROM fingerprint \
                 INNER JOIN employer \
                 ON fingerprint.employer_id = employer.employer_id")
-    res=cur.fetchall()
+    res = cur.fetchall()
     return res
 
 
@@ -58,3 +58,43 @@ def delete_employer(id):
     LCD.lcd.write_string("Commited to DB!")
     cur.close()
     conn.close()
+
+
+def fetch_sec_level(ip):
+    conn = psycopg2.connect(f"dbname={db_name} user={db_user} host={db_address} password=127238349Tel")
+    cur = conn.cursor()
+    cur.execute(f"SELECT sec_level FROM room WHERE local_ip='{ip}'")
+    res = cur.fetchone()
+    cur.close()
+    conn.close()
+    if res == None:
+        return None
+    else:
+        return res[0]
+    
+
+def insert_event(name, surname, zone, access):
+    conn = psycopg2.connect(f"dbname={db_name} user={db_user} host={db_address} password=127238349Tel")
+    cur = conn.cursor()
+    cur.execute(f"INSERT INTO event_log (date, zone, employer, access) \
+                    VALUES (current_timestamp, '{zone}', '{name + ' ' + surname}', '{access}')")
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+def fetch_zone_by_ip(ip):
+    conn = psycopg2.connect(f"dbname={db_name} user={db_user} host={db_address} password=127238349Tel") 
+    cur = conn.cursor()
+    cur.execute(f"SELECT name FROM room WHERE local_ip='{ip}'")
+    res = cur.fetchone()
+    cur.close()
+    conn.close()
+    return res[0]
+
+def fetch_last_event():
+    conn = psycopg2.connect(f"dbname={db_name} user={db_user} host={db_address} password=127238349Tel") 
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM event_log ORDER BY date DESC LIMIT 1")
+    res = cur.fetchone()
+    return res

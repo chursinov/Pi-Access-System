@@ -6,7 +6,7 @@ import matrix_mod as matrix
 import LCD_mod as LCD
 import buzzer as buzzer
 
-room_sec_level = 2
+#room_sec_level = 2
 
 def enrollFinger(CONFIRM_BUTTON):
     global state
@@ -27,7 +27,7 @@ def enrollFinger(CONFIRM_BUTTON):
         LCD.lcd.write_string("Finger not found")
         LCD.lcd.cursor_pos = (1,0)
         LCD.lcd.write_string("Try Again")
-        time.sleep()
+        time.sleep(3)
         state = "choose_admin_action"
         LCD.hello_admin()
         return
@@ -57,6 +57,7 @@ def enrollFinger(CONFIRM_BUTTON):
     while True:
         enroll_input_state = "employer"
         if GPIO.input(CONFIRM_BUTTON) == False:
+            buzzer.beep()
             break
         emp_id = matrix.read_input(enroll_input_state)
         LCD.write_id(matrix.input_code,1)
@@ -71,6 +72,7 @@ def enrollFinger(CONFIRM_BUTTON):
     while True:
         enroll_input_state = "sec_level"
         if GPIO.input(CONFIRM_BUTTON) == False:
+            buzzer.beep()
             break
         sec_level = matrix.read_input(enroll_input_state)
         LCD.write_id(matrix.input_code,1)
@@ -80,6 +82,7 @@ def enrollFinger(CONFIRM_BUTTON):
     time.sleep(0.5)
     while True:
         if GPIO.input(CONFIRM_BUTTON) == False:
+            buzzer.beep()
             if DB.addFingerPrint(specs,emp_id,sec_level) == True:
                 LCD.lcd.clear()
                 LCD.lcd.cursor_pos = (0,0)
@@ -118,16 +121,17 @@ def delete_employer(CONFIRM_BUTTON):
     delete_state = "delete_state"
     while True:
         if GPIO.input(CONFIRM_BUTTON) == False:
+            buzzer.beep()
             break
         employer_id_to_delete = matrix.read_input(delete_state)
         LCD.write_id(matrix.input_code,1)
-
+    
     LCD.enter_emp_id_msg(employer_id_to_delete)
     DB.delete_employer(employer_id_to_delete)
+    time.sleep(3)
     global state
     state = "choose_admin_action"
     LCD.hello_admin()
-    time.sleep(3)
 
 try:
     f = PyFingerprint('/dev/ttyS0', 57600, 0xFFFFFFFF, 0x00000000)
